@@ -15,7 +15,7 @@ const config: Config = {
     host: "localhost",
     origin: "https://localhost:4000",
     secretKey: "A0KzQq3cNfBogjH8",
-    dbUri: process.env.DB_URL
+    dbUri: "mongodb+srv://michal:A0KzQq3cNfBoGko9@cluster0.et8rk.mongodb.net/tempDB?retryWrites=true&w=majority"
 };
 
 export default config;

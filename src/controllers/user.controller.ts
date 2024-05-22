@@ -1,10 +1,13 @@
 // controllers/user.js
-
 import { Request, Response } from 'express';
+import csrf from 'csurf';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import {getUserByEmailUC, createUserUC, updateUserPasswordUC} from '../services/user.service';
-import {sendResetPasswordEmail } from '../utils/mailService';
+import { getUserByEmailUC, createUserUC, updateUserPasswordUC } from '../services/user.service';
+import { sendResetPasswordEmail } from '../utils/mailService';
+
+// Initialize CSRF protection middleware
+const csrfProtection = csrf({ cookie: true });
 
 export async function signup(req: Request, res: Response): Promise<void> {
     const { username, email, password } = req.body;
@@ -57,8 +60,8 @@ export async function login(req: Request, res: Response): Promise<void> {
             httpOnly: true,
             // You can add additional options here, such as secure: true for HTTPS
         });
-
-        res.json({ message: "Login successful" });
+        // Send the CSRF token as part of the response
+        res.json({ message: "Login successful", csrfToken: req.csrfToken() });
     } catch (err: any) {
         res.status(500).json({ message: err.message });
     }

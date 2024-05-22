@@ -1,14 +1,16 @@
 "use strict";
-// controllers/user.js
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.resetPassword = exports.forgotPassword = exports.logout = exports.login = exports.signup = void 0;
+const csurf_1 = __importDefault(require("csurf"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_service_1 = require("../services/user.service");
 const mailService_1 = require("../utils/mailService");
+// Initialize CSRF protection middleware
+const csrfProtection = (0, csurf_1.default)({ cookie: true });
 async function signup(req, res) {
     const { username, email, password } = req.body;
     try {
@@ -49,7 +51,8 @@ async function login(req, res) {
             httpOnly: true,
             // You can add additional options here, such as secure: true for HTTPS
         });
-        res.json({ message: "Login successful" });
+        // Send the CSRF token as part of the response
+        res.json({ message: "Login successful", csrfToken: req.csrfToken() });
     }
     catch (err) {
         res.status(500).json({ message: err.message });

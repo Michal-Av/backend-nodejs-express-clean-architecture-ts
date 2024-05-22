@@ -21,6 +21,7 @@ const corsOptions = {
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 };
 
+app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(cookieParser());

@@ -21,6 +21,7 @@ const corsOptions = {
     origin: 'http://localhost:3000', // Allow requests from this origin
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 };
+app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cors_1.default)(corsOptions));
 app.use(body_parser_1.default.json());
 app.use((0, cookie_parser_1.default)());
